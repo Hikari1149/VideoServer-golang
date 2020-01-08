@@ -15,6 +15,11 @@ func RegisterHandler ()*httprouter.Router{
 
 	////转发请求
 	router.POST("/api",apiHandler)
+
+	//proxyHandler
+	router.POST("/upload/:vid-id",proxyHandler)
+
+
 	////filer server
 	router.ServeFiles("/statics/*filepath",http.Dir("./template")) //
 	return router

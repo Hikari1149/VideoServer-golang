@@ -45,3 +45,12 @@ func Login (w http.ResponseWriter, r *http.Request, p httprouter.Params){
 	uName:=p.ByName("user_name")
 	io.WriteString(w,uName)
 }
+
+
+
+func GetUserInfo(w http.Response,r *http.Request,p httprouter.Params){
+
+}
+
+
+

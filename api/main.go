@@ -4,6 +4,7 @@ package main
 import (
 	"github.com/julienschmidt/httprouter"
 	"net/http"
+	"videoServer/api/session"
 )
 
 type middleWareHandler struct{
@@ -30,11 +31,17 @@ func RegisterHandlers() *httprouter.Router{
 
 	router.POST("/user/:user_name",Login)
 
+
+	router.GET("/user/:username",GetUserInfo)
+
 	return router
 }
 
-
+func Prepare(){
+	session.LoadSessionFromDB()
+}
 func main(){
+	Prepare()
 	r:=RegisterHandlers()
 	mh:=NewMiddleWareHandler(r)
 	http.ListenAndServe(":8000",mh)
