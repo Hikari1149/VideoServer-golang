@@ -3,10 +3,12 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"hikari/config"
 	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 var httpClient *http.Client
@@ -19,6 +21,10 @@ func request(b *ApiBody,w http.ResponseWriter,r *http.Request){
 
 	var resp *http.Response
 	var err error
+
+	u,_:=url.Parse(b.Url)
+	u.Host=config.GetLbAddr()+":"+u.Port()
+	//newUrl:=u.String()
 
 	switch b.Method {
 		case http.MethodGet:

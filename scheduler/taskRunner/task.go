@@ -6,6 +6,7 @@ import (
 	"os"
 	"sync"
 	"videoServer/scheduler/dbops"
+	"videoServer/scheduler/ossops"
 )
 
 func deleteVideo(vid string) error{
@@ -14,6 +15,16 @@ func deleteVideo(vid string) error{
 		log.Printf("Deleting video error: %v",err)
 		return err
 	}
+
+	//delete file in oss
+	ossfn:="videos/"+vid
+	bn:="bucketName XXX"
+	ok:=ossops.DeleteObject(ossfn,bn)
+	if !ok{
+		log.Printf("Delet video error oss op failed")
+		return errors.New("delete video error")
+	}
+
 	return nil
 }
 

@@ -16,6 +16,9 @@ func RegisterHandler ()*httprouter.Router{
 	////转发请求
 	router.POST("/api",apiHandler)
 
+	//
+	router.GET("/videos/:vid-id",proxyVideoHandler)
+
 	//proxyHandler
 	router.POST("/upload/:vid-id",proxyHandler)
 

@@ -30,6 +30,11 @@ func StreamHandler(w http.ResponseWriter,r *http.Request,p httprouter.Params){
 	//ServeContent replies to the request using the content in the provided ReadSeeker.
 	http.ServeContent(w,r,"",time.Now(),video) //二进制流形式传输给客户端
 	defer video.Close()
+
+
+
+	//targetUrl:="http://aliyun.XXX/videos"+p.ByName("vid-id")
+	//http.Redirect(w,r,targetUrl,301)
 }
 func uploadHandler(w http.ResponseWriter,r *http.Request,p httprouter.Params){
 	r.Body = http.MaxBytesReader(w,r.Body,MAX_UPLOAD_SIZE)
@@ -57,6 +62,18 @@ func uploadHandler(w http.ResponseWriter,r *http.Request,p httprouter.Params){
 		sendErrorResponse(w,http.StatusInternalServerError,"internal error")
 		return
 	}
+
+	//oss
+	ossfn:="videos/"+fn
+	path:="./videos"+fn
+	bn:="avenssi-videos2"
+	ret :=UploadToOss(ossfn,path,bn)
+	if !ret{
+		sendErrorResponse(w,http.StatusInternalServerError,"failed")
+		return
+	}
+	os.Remove(path)
+	//oss_end
 
 	w.WriteHeader(http.StatusCreated)
 	io.WriteString(w,"Uploaded successful")

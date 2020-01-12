@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"github.com/julienschmidt/httprouter"
+	"hikari/config"
 	"html/template"
 	"io"
 	"io/ioutil"
@@ -91,6 +92,13 @@ func apiHandler(w http.ResponseWriter,r *http.Request,ps httprouter.Params){
 	request(apiBody,w,r)
 	defer r.Body.Close()
 }
+
+func proxyVideoHandler(w http.ResponseWriter,r *http.Request,ps httprouter.Params){
+	u,_:=url.Parse("http://"+config.GetLbAddr()+":9000")
+	proxy:=httputil.NewSingleHostReverseProxy(u)
+	proxy.ServeHTTP(w,r)
+}
+
 
 func proxyHandler(w http.ResponseWriter,r *http.Request,ps httprouter.Params){
 	u,_:=url.Parse("http://127.0.0.1:9000/")

@@ -12,7 +12,9 @@ var (
 )
 // init
 func init(){
-	dbConn,err=sql.Open("mysql","root:Abc12345@tcp(localhost:3306)/viedoServices")
+	dbConn,err=sql.Open(
+		"mysql",
+		"root:{PASSWORD}@tcp(localhost:3306)/viedoServices")
 	if err!=nil{
 		panic(err.Error())
 	}
